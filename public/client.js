@@ -33,6 +33,9 @@ function calculate(operand1, operand2, operation) {
         case '/':
             uri += "?operation=divide";
             break;
+        case '^':
+            uri += "?operation=power";
+            break;
         default:
             setError();
             return;
@@ -50,7 +53,11 @@ function calculate(operand1, operand2, operation) {
 
         if (http.status == 200) {
             var response = JSON.parse(http.responseText);
-            setValue(response.result);
+            if (response.result != null) {
+                setValue(response.result);
+            } else {
+                setError();
+            }
         } else {
             setError();
         }
@@ -110,11 +117,39 @@ function signPressed() {
     }
 }
 
+//update operationPressed to log the operation pressed
+//make operationpressed solve the square root operation and the trigonometric functions and console.log erroors and results too
+
+
+
 function operationPressed(op) {
-    operand1 = getValue();
-    operation = op;
-    state = states.operator;
+    if (op === '√') {
+        const value = getValue();
+        const result = Math.sqrt(value);
+        setValue(result);
+        state = states.complete;
+    } else if (op === 'sin') {
+        const value = getValue();
+        const result = Math.sin(value);
+        setValue(result);
+        state = states.complete;
+    } else if (op === 'cos') {
+        const value = getValue();
+        const result = Math.cos(value);
+        setValue(result);
+        state = states.complete;
+    } else if (op === 'tan') {
+        const value = getValue();
+        const result = Math.tan(value);
+        setValue(result);
+        state = states.complete;
+    } else {
+        operand1 = getValue();
+        operation = op;
+        state = states.operator;
+    }
 }
+
 
 function equalPressed() {
     if (state < states.operand2) {
