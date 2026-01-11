@@ -16,7 +16,11 @@ exports.calculate = function(req, res) {
     'subtract': function(a, b) { return a - b },
     'multiply': function(a, b) { return a * b },
     'divide':   function(a, b) { return a / b },
-    'power':    function(a, b) { return Math.pow(a, b) }
+    'power':    function(a, b) { return Math.pow(a, b) },
+    'sin':      function(a)    { return Math.sin(a) },
+    'cos':      function(a)    { return Math.cos(a) },
+    'tan':      function(a)    { return Math.tan(a) },
+    'sqrt':     function(a)    { return Math.sqrt(a) }
   };
 
   if (!req.query.operation) {
