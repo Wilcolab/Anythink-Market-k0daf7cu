@@ -8,6 +8,15 @@ app.use(express.static('public'));
 const routes = require("./api/routes");
 routes(app);
 
+app.use(function(err, req, res, next) {
+  if (res.headersSent) {
+    return next(err);
+  }
+
+  res.status(400);
+  res.json({ error: err.message });
+});
+
 if (!module.parent) {
     app.listen(port, () => {
         console.log(`Server running on port ${port}`);
