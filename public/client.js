@@ -36,6 +36,18 @@ function calculate(operand1, operand2, operation) {
         case '^':
             uri += "?operation=power";
             break;
+        case 'sin':
+            uri += "?operation=sin";
+            break;
+        case 'cos':
+            uri += "?operation=cos";
+            break;
+        case 'tan':
+            uri += "?operation=tan";
+            break;
+        case '√':
+            uri += "?operation=sqrt";
+            break;
         default:
             setError();
             return;
