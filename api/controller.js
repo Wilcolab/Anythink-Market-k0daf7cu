@@ -20,7 +20,7 @@ exports.calculate = function(req, res) {
     'sin':      function(a)    { return Math.sin(a) },
     'cos':      function(a)    { return Math.cos(a) },
     'tan':      function(a)    { return Math.tan(a) },
-    'sqrt':     function(a)    { return Math.sqrt(a) }
+    'sqrt':     function(a)    { if (a < 0) throw new Error("Square root of negative number"); return Math.sqrt(a) }
   };
 
   if (!req.query.operation) {

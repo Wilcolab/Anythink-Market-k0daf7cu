@@ -92,9 +92,194 @@ describe('Arithmetic', function () {
                 });
         });
     });
-
-// TODO: Challenge #1
+    describe('Power', function () {
+        it('raises a positive integer to a positive power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=2&operand2=3')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 8 });
+                    done();
+                });
+        });
+        it('raises a positive integer to zero power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=42&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 1 });
+                    done();
+                });
+        });
+        it('raises a positive integer to a negative power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=2&operand2=-2')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 0.25 });
+                    done();
+                });
+        });
+        it('raises a negative integer to a positive even power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=-2&operand2=2')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 4 });
+                    done();
+                });
+        });
+        it('raises a negative integer to a positive odd power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=-2&operand2=3')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: -8 });
+                    done();
+                });
+        });
+        it('raises a floating point number to a power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=1.5&operand2=2')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 2.25 });
+                    done();
+                });
+        });
+    });
  
+    describe('Subtraction', function () {
+        it('subtracts two positive integers', function (done) {
+            request.get('/arithmetic?operation=subtract&operand1=42&operand2=21')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 21 });
+                    done();
+                });
+        });
+        it('subtracts zero from an integer', function (done) {
+            request.get('/arithmetic?operation=subtract&operand1=42&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 42 });
+                    done();
+                });
+        });
+        it('subtracts a negative integer from a positive integer', function (done) {
+            request.get('/arithmetic?operation=subtract&operand1=21&operand2=-21')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 42 });
+                    done();
+                });
+        });
+        it('subtracts two negative integers', function (done) {
+            request.get('/arithmetic?operation=subtract&operand1=-21&operand2=-21')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 0 });
+                    done();
+                });
+        });
+        it('subtracts a floating point number from an integer', function (done) {
+            request.get('/arithmetic?operation=subtract&operand1=5&operand2=2.5')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 2.5 });
+                    done();
+                });
+        });
+    });
+
+    describe('Square Root', function () {
+        it('calculates square root of a positive integer', function (done) {
+            request.get('/arithmetic?operation=sqrt&operand1=16&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 4 });
+                    done();
+                });
+        });
+        it('calculates square root of a floating point number', function (done) {
+            request.get('/arithmetic?operation=sqrt&operand1=2.25&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 1.5 });
+                    done();
+                });
+        });
+        it('calculates square root of zero', function (done) {
+            request.get('/arithmetic?operation=sqrt&operand1=0&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 0 });
+                    done();
+                });
+        });
+        it('rejects square root of negative number', function (done) {
+            request.get('/arithmetic?operation=sqrt&operand1=-4&operand2=0')
+                .expect(400)
+                .end(function (err, res) {
+                    expect(res.body).to.have.property('error');
+                    done();
+                });
+        });
+    });
+
+    //test for sine operation
+    describe('Sine', function () {
+        it('calculates sine of 0 degrees', function (done) {
+            request.get('/arithmetic?operation=sin&operand1=0&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 0 });
+                    done();
+                });
+        });
+        it('calculates sine of 90 degrees', function (done) {
+            request.get('/arithmetic?operation=sin&operand1=1.5708&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body.result).to.be.closeTo(1, 0.0001);
+                    done();
+                });
+        });
+    });
+
+    //test for cosine operation
+    describe('Cosine', function () {
+        it('calculates cosine of 0 degrees', function (done) {
+            request.get('/arithmetic?operation=cos&operand1=0&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 1 });
+                    done();
+                });
+        });
+        it('calculates cosine of 90 degrees', function (done) {
+            request.get('/arithmetic?operation=cos&operand1=1.5708&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body.result).to.be.closeTo(0, 0.0001);
+                    done();
+                });
+        });
+    });
+
+    //test for tangent operation
+    describe('Tangent', function () {
+        it('calculates tangent of 0 degrees', function (done) {
+            request.get('/arithmetic?operation=tan&operand1=0&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 0 });
+                    done();
+                });
+        });
+        it('calculates tangent of 45 degrees', function (done) {
+            request.get('/arithmetic?operation=tan&operand1=0.7854&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body.result).to.be.closeTo(1, 0.0001);
+                    done();
+                });
+        });
+    });
 
     describe('Multiplication', function () {
         it('multiplies two positive integers', function (done) {
